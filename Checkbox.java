@@ -1,3 +1,5 @@
+package src.general.AnimatedCheckbox;
+
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -94,6 +96,13 @@ public class Checkbox extends JPanel {
     }
 
     /**
+     * @return if checkmark is active
+     */
+    public boolean getActive() {
+        return checkbox.getActive();
+    }
+
+    /**
      * Sets up the rest of the checkbox
      */
     private void setup() {
@@ -126,6 +135,20 @@ public class Checkbox extends JPanel {
     }
 
     /**
+     * Does the checkbox action without the animation
+     */
+    public void doAction() {
+        if(checkbox.getActive()) {
+            checkbox.uncheck();
+            checkbox.changeAlphaValues(4, 3, false);
+        } else {
+            checkbox.check();
+            checkbox.changeAlphaValues(4, 3, true);
+        }
+    }
+
+
+    /**
      * paints the checkbox outline and the checkmark
      */
     public void paintComponent(Graphics g) {
@@ -134,9 +157,11 @@ public class Checkbox extends JPanel {
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         try {
             for(Circle circle : circles) {
-                Color color = circle.getColor();
-                graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), circle.getAlpha()));
-                graphics.fillOval((getWidth() / 2) - (circle.getDiameter() / 2), (getHeight() / 2) - (circle.getDiameter() / 2), circle.getDiameter(), circle.getDiameter());
+                try {
+                    Color color = circle.getColor();
+                    graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), circle.getAlpha()));
+                    graphics.fillOval((getWidth() / 2) - (circle.getDiameter() / 2), (getHeight() / 2) - (circle.getDiameter() / 2), circle.getDiameter(), circle.getDiameter());
+                } catch(java.lang.NullPointerException e) {}
             }
         } catch(java.util.ConcurrentModificationException e) {}
     }
